@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  ADMIN
+  FUNDACION
+  DONANTE
+  CIUDADANO
+  PENDIENTE_APROBACION
+}
+
+enum TipoDonacion {
+  ALIMENTO
+  PRODUCTO
+  DINERO
+}
+
+enum TipoSolicitud {
+  ALIMENTO
+  PRODUCTO
+}
+
+enum EstadoDonacion {
+  PENDIENTE
+  CONFIRMADA
+  ENTREGADA
+  CANCELADA
+}
+
+enum EstadoSolicitud {
+  ACTIVA
+  CUBIERTA
+  CANCELADA
+  VENCIDA
+}
+
+enum EstadoOrg {
+  PENDIENTE
+  APROBADA
+  RECHAZADA
+}
+
+enum Urgencia {
+  BAJA
+  NORMAL
+  ALTA
+  CRITICA
+}
+
+enum TipoDocumento {
+  RUT
+  CAMARA_COMERCIO
+  FOTO
+}
+
+enum TipoOrganizacion {
+  ONG
+  FUNDACION
+  COMEDOR_COMUNITARIO
+  OTRO
+}
+
+model Usuario {
+  id            Int        @id @default(autoincrement())
+  nombre        String
+  email         String     @unique
+  password      String
+  rol           Rol        @default(CIUDADANO)
+  activo        Boolean    @default(true)
+  creadoEn      DateTime   @default(now())
+  actualizadoEn DateTime   @updatedAt
+  donaciones    Donacion[] @relation("Donante")
+  organizacion  Organizacion?
+
+  @@index([email])
+  @@index([rol])
+}
+
+model Organizacion {
+  id            Int              @id @default(autoincrement())
+  nombre        String
+  tipo          TipoOrganizacion
+  nit           String           @unique
+  direccion     String
+  ciudad        String
+  telefono      String
+  email         String
+  descripcion   String
+  verificada    Boolean          @default(false)
+  estado        EstadoOrg        @default(PENDIENTE)
+  usuarioId     Int              @unique
+  usuario       Usuario          @relation(fields: [usuarioId], references: [id])
+  motivoRechazo String?
+  creadoEn      DateTime         @default(now())
+  actualizadoEn DateTime         @updatedAt
+  documentos    Documento[]
+  solicitudes   Solicitud[]
+
+  @@index([verificada])
+  @@index([estado])
+}
+
+model Documento {
+  id             Int           @id @default(autoincrement())
+  organizacionId Int
+  organizacion   Organizacion  @relation(fields: [organizacionId], references: [id])
+  tipo           TipoDocumento
+  nombreOriginal String
+  ruta           String
+  mimeType       String
+  tamano         Int
+  creadoEn       DateTime      @default(now())
+
+  @@index([organizacionId])
+}
+
+model Solicitud {
+  id             Int             @id @default(autoincrement())
+  organizacionId Int
+  organizacion   Organizacion    @relation(fields: [organizacionId], references: [id])
+  titulo         String
+  descripcion    String
+  tipo           TipoSolicitud
+  cantidad       String
+  urgencia       Urgencia        @default(NORMAL)
+  estado         EstadoSolicitud @default(ACTIVA)
+  ciudad         String
+  creadoEn       DateTime        @default(now())
+  actualizadoEn  DateTime        @updatedAt
+  donaciones     Donacion[]
+
+  @@index([estado])
+  @@index([tipo])
+  @@index([organizacionId])
+}
+
+model Donacion {
+  id            Int            @id @default(autoincrement())
+  donanteId     Int
+  donante       Usuario        @relation("Donante", fields: [donanteId], references: [id])
+  solicitudId   Int?
+  solicitud     Solicitud?     @relation(fields: [solicitudId], references: [id])
+  tipo          TipoDonacion
+  descripcion   String
+  cantidad      String
+  estado        EstadoDonacion @default(PENDIENTE)
+  creadoEn      DateTime       @default(now())
+  actualizadoEn DateTime       @updatedAt
+
+  @@index([donanteId])
+  @@index([estado])
+  @@index([solicitudId])
+}
+
+model Contacto {
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  email    String
+  mensaje  String
+  creadoEn DateTime @default(now())
+}

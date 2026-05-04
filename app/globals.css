@@ -1,26 +1,38 @@
+@config "../tailwind.config.ts";
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f2f5f1;
+  --foreground: #2e2e2e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-poppins);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+.donafy-texture {
+  background-image:
+    radial-gradient(
+      circle at 1px 1px,
+      rgba(31, 77, 58, 0.08) 1px,
+      transparent 0
+    ),
+    radial-gradient(
+      circle at 20px 20px,
+      rgba(123, 175, 127, 0.08) 1px,
+      transparent 0
+    );
+  background-size: 36px 36px;
 }

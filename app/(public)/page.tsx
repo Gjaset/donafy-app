@@ -1,0 +1,23 @@
+import Hero from "@/components/landing/Hero";
+import CifrasDashboard from "@/components/landing/CifrasDashboard";
+import SolicitudesPublicas from "@/components/landing/SolicitudesPublicas";
+import QuienesSomos from "@/components/landing/QuienesSomos";
+import ComoFunciona from "@/components/landing/ComoFunciona";
+import Transparencia from "@/components/landing/Transparencia";
+import TiposDonacion from "@/components/landing/TiposDonacion";
+import FormularioContacto from "@/components/landing/FormularioContacto";
+
+export default function PublicHome() {
+  return (
+    <div className="flex flex-col">
+      <Hero />
+      <CifrasDashboard />
+      <SolicitudesPublicas />
+      <QuienesSomos />
+      <ComoFunciona />
+      <Transparencia />
+      <TiposDonacion />
+      <FormularioContacto />
+    </div>
+  );
+}
