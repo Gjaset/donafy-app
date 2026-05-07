@@ -3,15 +3,15 @@ import FadeInSection from "@/components/ui/FadeInSection";
 const tipos = [
   {
     title: "Alimentos frescos",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Frutas, verduras, proteínas y lácteos próximos a vencer que los proveedores redistribuyen antes de que se desperdicien. Matching automático con instituciones cercanas.",
   },
   {
     title: "Productos no perecederos",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Arroz, aceite, legumbres, enlatados y otros productos de larga duración que garantizan abastecimiento constante independientemente de la frecuencia de donación.",
   },
   {
     title: "Donacion monetaria",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    description: "Elige una institución, define el monto y nosotros nos encargamos de comprar exactamente lo que necesitan. Sabrás en qué se usó cada peso con foto de entrega incluida.",
     badge: "Proximamente",
   },
 ];

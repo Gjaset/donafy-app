@@ -61,8 +61,7 @@ export default function FormularioContacto() {
               Contacto
             </h2>
             <p className="mt-4 text-sm text-donafy-text/70">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+             ¿Eres una institución que necesita apoyo, un proveedor con excedentes o un ciudadano que quiere contribuir? Escríbenos — respondemos en menos de 24 horas y te acompañamos en el proceso de registro.
             </p>
           </div>
           <form
@@ -78,7 +77,7 @@ export default function FormularioContacto() {
                   name="nombre"
                   required
                   className="mt-2 w-full rounded-lg border border-donafy-gray/60 px-3 py-2 text-sm"
-                  placeholder="Lorem ipsum"
+                  placeholder="Nombre"
                 />
               </div>
               <div>
@@ -90,7 +89,7 @@ export default function FormularioContacto() {
                   type="email"
                   required
                   className="mt-2 w-full rounded-lg border border-donafy-gray/60 px-3 py-2 text-sm"
-                  placeholder="lorem@ipsum.com"
+                  placeholder="email@email.com"
                 />
               </div>
               <div>
@@ -102,7 +101,7 @@ export default function FormularioContacto() {
                   required
                   rows={4}
                   className="mt-2 w-full rounded-lg border border-donafy-gray/60 px-3 py-2 text-sm"
-                  placeholder="Lorem ipsum dolor sit amet"
+                  placeholder="Escribe tu mensaje aquí..."
                 />
               </div>
               {toast && (

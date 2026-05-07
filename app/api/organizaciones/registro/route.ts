@@ -7,6 +7,7 @@ import {
   TipoDocumento,
   TipoOrganizacion,
 } from "@prisma/client";
+import bcrypt from "bcryptjs";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
@@ -68,14 +69,7 @@ export async function POST(request: Request) {
   try {
     const session = await auth();
 
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { success: false, message: "No autorizado" },
-        { status: 401 }
-      );
-    }
-
-    if (session.user.rol === Rol.ADMIN) {
+    if (session?.user?.rol === Rol.ADMIN) {
       return NextResponse.json(
         { success: false, message: "Operacion no permitida" },
         { status: 403 }
@@ -92,6 +86,11 @@ export async function POST(request: Request) {
     const telefono = String(formData.get("telefono") || "").trim();
     const email = String(formData.get("email") || "").trim();
     const descripcion = String(formData.get("descripcion") || "").trim();
+    const responsable = String(formData.get("responsable") || "").trim();
+    const password = String(formData.get("password") || "");
+    const confirmPassword = String(formData.get("confirmPassword") || "");
+
+    let userId = session?.user?.id ? Number(session.user.id) : null;
 
     if (
       !nombre ||
@@ -114,6 +113,64 @@ export async function POST(request: Request) {
         { success: false, message: "Tipo de organizacion invalido" },
         { status: 400 }
       );
+    }
+
+    const existingNit = await prisma.organizacion.findUnique({
+      where: { nit },
+    });
+
+    if (existingNit) {
+      return NextResponse.json(
+        { success: false, message: "El NIT ya esta registrado" },
+        { status: 400 }
+      );
+    }
+
+    if (!userId) {
+      if (!responsable || !email || !password || !confirmPassword) {
+        return NextResponse.json(
+          { success: false, message: "Campos incompletos" },
+          { status: 400 }
+        );
+      }
+
+      if (password.length < 6) {
+        return NextResponse.json(
+          { success: false, message: "La password es muy corta" },
+          { status: 400 }
+        );
+      }
+
+      if (password !== confirmPassword) {
+        return NextResponse.json(
+          { success: false, message: "Las passwords no coinciden" },
+          { status: 400 }
+        );
+      }
+
+      const existingUser = await prisma.usuario.findUnique({
+        where: { email },
+      });
+
+      if (existingUser) {
+        return NextResponse.json(
+          { success: false, message: "El email ya esta registrado" },
+          { status: 400 }
+        );
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const createdUser = await prisma.usuario.create({
+        data: {
+          nombre: responsable,
+          email,
+          password: hashedPassword,
+          rol: Rol.PENDIENTE_APROBACION,
+          activo: true,
+        },
+      });
+
+      userId = createdUser.id;
     }
 
     const rut = formData.get("rut");
@@ -157,7 +214,7 @@ export async function POST(request: Request) {
     }
 
     const existing = await prisma.organizacion.findUnique({
-      where: { usuarioId: Number(session.user.id) },
+      where: { usuarioId: Number(userId) },
     });
 
     if (existing) {
@@ -172,7 +229,7 @@ export async function POST(request: Request) {
       "public",
       "uploads",
       "organizaciones",
-      String(session.user.id)
+      String(userId)
     );
     await mkdir(uploadDir, { recursive: true });
 
@@ -184,7 +241,7 @@ export async function POST(request: Request) {
       await writeFile(filePath, buffer);
       return {
         nombreOriginal: file.name,
-        ruta: `/uploads/organizaciones/${session.user.id}/${filename}`,
+        ruta: `/uploads/organizaciones/${userId}/${filename}`,
         mimeType: file.type,
         tamano: file.size,
       };
@@ -209,7 +266,7 @@ export async function POST(request: Request) {
           descripcion,
           estado: EstadoOrg.PENDIENTE,
           verificada: false,
-          usuarioId: Number(session.user.id),
+          usuarioId: Number(userId),
           documentos: {
             create: [
               { ...rutFile, tipo: TipoDocumento.RUT },
@@ -221,7 +278,7 @@ export async function POST(request: Request) {
       });
 
       await tx.usuario.update({
-        where: { id: Number(session.user.id) },
+        where: { id: Number(userId) },
         data: { rol: Rol.PENDIENTE_APROBACION },
       });
 

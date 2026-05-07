@@ -8,8 +8,8 @@ export default function Footer() {
         <div className="flex flex-col gap-4">
           <Logo variant="light" size={36} />
           <p className="text-sm text-white/70">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Donafy es una plataforma digital de impacto social que conecta proveedores de alimentos con instituciones vulnerables verificadas en Colombia. 
+            Tecnología al servicio de quienes más lo necesitan.
           </p>
         </div>
 

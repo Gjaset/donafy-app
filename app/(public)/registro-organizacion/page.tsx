@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Loader from "@/components/ui/Loader";
@@ -17,15 +17,7 @@ export default function RegistroOrganizacionPage() {
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      const callbackUrl = encodeURIComponent("/registro-organizacion");
-      router.replace(
-        `/login?mensaje=Inicia%20sesion%20para%20continuar&callbackUrl=${callbackUrl}`
-      );
-    }
-  }, [status, router]);
+  const isAuthenticated = status === "authenticated";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,6 +25,14 @@ export default function RegistroOrganizacionPage() {
     setMessage(null);
 
     const formData = new FormData(event.currentTarget);
+    const password = String(formData.get("password") || "");
+    const confirmPassword = String(formData.get("confirmPassword") || "");
+
+    if (!isAuthenticated && password !== confirmPassword) {
+      setMessage("Las passwords no coinciden.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/organizaciones/registro", {
@@ -75,6 +75,54 @@ export default function RegistroOrganizacionPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+          {!isAuthenticated && (
+            <div className="rounded-lg border border-donafy-light/40 bg-donafy-cream px-4 py-3 text-xs text-donafy-text">
+              Crea tu cuenta de acceso para registrar la fundacion.
+            </div>
+          )}
+
+          {!isAuthenticated && (
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="text-xs font-semibold text-donafy-text">
+                  Nombre responsable
+                </label>
+                <input
+                  name="responsable"
+                  required={!isAuthenticated}
+                  className="mt-2 w-full rounded-lg border border-donafy-gray/60 px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-donafy-text">
+                  Password
+                </label>
+                <input
+                  name="password"
+                  type="password"
+                  required={!isAuthenticated}
+                  minLength={6}
+                  className="mt-2 w-full rounded-lg border border-donafy-gray/60 px-3 py-2 text-sm"
+                />
+                <p className="mt-1 text-xs text-donafy-text/60">
+                  Minimo 6 caracteres.
+                </p>
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-donafy-text">
+                  Confirmar password
+                </label>
+                <input
+                  name="confirmPassword"
+                  type="password"
+                  required={!isAuthenticated}
+                  minLength={6}
+                  className="mt-2 w-full rounded-lg border border-donafy-gray/60 px-3 py-2 text-sm"
+                />
+              </div>
+            </div>
+          )}
+
           <div className="grid gap-4 md:grid-cols-2">
             <div>
               <label className="text-xs font-semibold text-donafy-text">

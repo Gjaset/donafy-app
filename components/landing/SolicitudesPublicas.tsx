@@ -138,7 +138,6 @@ export default function SolicitudesPublicas() {
               Solicitudes activas
             </h2>
             <p className="mt-2 text-sm text-donafy-text/70">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-donafy-text/60">
               <span>Ultima actualizacion: {lastUpdated}</span>

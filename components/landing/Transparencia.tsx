@@ -4,17 +4,17 @@ const items = [
   {
     title: "Validacion de organizaciones",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.",
+      "Todas las instituciones pasan por un proceso de verificación digital antes de recibir donaciones. Solo entidades legítimas y activas hacen parte de nuestra red.",
   },
   {
     title: "Trazabilidad de donaciones",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.",
+      "Cada donación genera un registro completo — quién donó, qué se compró, cuándo llegó y a quién benefició. El donante recibe foto de entrega y confirmación en tiempo real.",
   },
   {
     title: "Reportes claros",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.",
+      "Proveedores y donantes acceden a un dashboard con métricas de su impacto individual — kg donados, personas beneficiadas y certificado tributario descargable automáticamente.",
   },
 ];
 
@@ -28,7 +28,7 @@ export default function Transparencia() {
               Transparencia
             </h2>
             <p className="mt-2 text-sm text-donafy-text/70">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              En Donafy cada peso donado y cada kilogramo redistribuido es visible, verificable y trazable desde el primer momento.
             </p>
           </div>
         </div>

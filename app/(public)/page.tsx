@@ -1,5 +1,6 @@
 import Hero from "@/components/landing/Hero";
 import CifrasDashboard from "@/components/landing/CifrasDashboard";
+import NuestroImpacto from "@/components/landing/NuestroImpacto";
 import SolicitudesPublicas from "@/components/landing/SolicitudesPublicas";
 import QuienesSomos from "@/components/landing/QuienesSomos";
 import ComoFunciona from "@/components/landing/ComoFunciona";
@@ -12,6 +13,7 @@ export default function PublicHome() {
     <div className="flex flex-col">
       <Hero />
       <CifrasDashboard />
+      <NuestroImpacto />
       <SolicitudesPublicas />
       <QuienesSomos />
       <ComoFunciona />
