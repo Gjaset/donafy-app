@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { PrismaClient, Rol } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 
@@ -40,6 +41,7 @@ async function main() {
         where: { email: usuario.email },
         update: {
           nombre: usuario.nombre,
+          password: basePassword,
           rol: usuario.rol,
           activo: true,
         },

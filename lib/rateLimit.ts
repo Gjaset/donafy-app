@@ -22,3 +22,7 @@ export function checkRateLimit(key: string, limit: number, windowMs: number) {
   entry.count += 1;
   return { ok: true, remaining: limit - entry.count, resetAt: entry.resetAt };
 }
+
+export function resetRateLimit(key: string) {
+  rateLimitStore.delete(key);
+}

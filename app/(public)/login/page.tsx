@@ -19,6 +19,7 @@ export default function LoginPage() {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const incomingMessage = searchParams.get("mensaje");
   const callbackUrl = searchParams.get("callbackUrl");
   const safeCallbackUrl =
     callbackUrl && callbackUrl.startsWith("/") ? callbackUrl : null;
@@ -30,13 +31,6 @@ export default function LoginPage() {
       );
     }
   }, [session, router, safeCallbackUrl]);
-
-  useEffect(() => {
-    const incoming = searchParams.get("mensaje");
-    if (incoming) {
-      setMessage(incoming);
-    }
-  }, [searchParams]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -96,9 +90,9 @@ export default function LoginPage() {
               className="mt-2 w-full rounded-lg border border-donafy-gray/60 px-3 py-2 text-sm"
             />
           </div>
-          {message && (
+          {(message ?? incomingMessage) && (
             <p className="rounded-lg border border-donafy-light/40 bg-donafy-cream px-4 py-2 text-xs text-donafy-text">
-              {message}
+              {message ?? incomingMessage}
             </p>
           )}
           <button

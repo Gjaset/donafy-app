@@ -8,7 +8,16 @@ import Toast from "@/components/ui/Toast";
 import FadeInSection from "@/components/ui/FadeInSection";
 import { Roles } from "@/lib/roles";
 
-const solicitudesMock = [
+type SolicitudCard = {
+  id: number;
+  fundacion: string;
+  tipo: "ALIMENTO" | "PRODUCTO";
+  descripcion: string;
+  ciudad: string;
+  urgencia: "BAJA" | "NORMAL" | "ALTA" | "CRITICA";
+};
+
+const solicitudesMock: SolicitudCard[] = [
   {
     id: 1,
     fundacion: "Fundacion Nueva Vida",
@@ -61,9 +70,7 @@ export default function SolicitudesPublicas() {
     message: string;
     variant: "success" | "error" | "info";
   } | null>(null);
-  const [modal, setModal] = useState<(typeof solicitudesMock)[number] | null>(
-    null
-  );
+  const [modal, setModal] = useState<SolicitudCard | null>(null);
 
   const ciudades = useMemo(() => {
     const values = new Set(solicitudesMock.map((item) => item.ciudad));
@@ -90,7 +97,7 @@ export default function SolicitudesPublicas() {
     []
   );
 
-  const handleDonar = (solicitud: (typeof solicitudesMock)[number]) => {
+  const handleDonar = (solicitud: SolicitudCard) => {
     const role = session?.user?.rol as string | undefined;
 
     if (!session?.user) {

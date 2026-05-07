@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getServerSession } from "next-auth";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { checkRateLimit } from "@/lib/rateLimit";
+import { checkRateLimit, resetRateLimit } from "@/lib/rateLimit";
 import { Rol } from "@prisma/client";
 
 const LOGIN_LIMIT = 5;
@@ -85,6 +85,8 @@ export const authOptions: NextAuthOptions = {
         if (!isValid) {
           throw new Error("INVALID_CREDENTIALS");
         }
+
+        resetRateLimit(`login:${ip}`);
 
         return {
           id: String(user.id),
