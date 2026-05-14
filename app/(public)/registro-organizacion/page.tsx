@@ -71,7 +71,7 @@ export default function RegistroOrganizacionPage() {
           Registro de organizacion
         </h1>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Completa el formulario para registrar tu institución. Será verificada por nuestro equipo antes de poder recibir donaciones.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">

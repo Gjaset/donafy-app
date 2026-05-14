@@ -64,7 +64,7 @@ export default function UsuariosPage() {
       <div>
         <h1 className="text-2xl font-semibold text-donafy-text">Usuarios</h1>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Administra los usuarios de la plataforma, revisa sus roles, activa o desactiva cuentas y supervisa el estado de verificación de cada perfil.
         </p>
       </div>
 

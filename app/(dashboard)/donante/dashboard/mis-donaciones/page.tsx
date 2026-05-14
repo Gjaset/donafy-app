@@ -4,7 +4,7 @@ export default function MisDonacionesPage() {
       <div>
         <h1 className="text-2xl font-semibold text-donafy-text">Mis donaciones</h1>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Aquí puedes revisar el historial completo de tus donaciones, el estado de entrega y el impacto que generaste en cada institución.
         </p>
       </div>
 

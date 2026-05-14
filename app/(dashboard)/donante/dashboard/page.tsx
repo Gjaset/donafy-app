@@ -8,7 +8,7 @@ export default function DonanteDashboardPage() {
           Panel de donante
         </h1>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Aquí puedes explorar solicitudes de donación activas, registrar tus contribuciones y ver el impacto que generas en tiempo real.
         </p>
       </div>
 
@@ -17,7 +17,7 @@ export default function DonanteDashboardPage() {
           Acciones rapidas
         </h2>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Selecciona una acción para comenzar a contribuir. Puedes buscar solicitudes urgentes, revisar instituciones verificadas o consultar tus donaciones anteriores.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link

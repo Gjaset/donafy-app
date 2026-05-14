@@ -67,7 +67,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-[0_2px_12px_rgba(0,0,0,0.08)]">
         <h1 className="text-2xl font-semibold text-donafy-text">Iniciar sesion</h1>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Ingresa con tu cuenta para acceder a tu panel de donante, institución o administrador.
         </p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>

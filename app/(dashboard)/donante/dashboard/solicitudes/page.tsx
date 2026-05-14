@@ -9,7 +9,7 @@ const solicitudesMock = [
     id: 1,
     fundacion: "Fundacion Nueva Vida",
     tipo: "ALIMENTO" as const,
-    descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    descripcion: "Necesitamos alimentos no perecederos para 45 niños en nuestro hogar. Cereales, leche en polvo y aceite.",
     ciudad: "Bogota",
     urgencia: "CRITICA" as const,
   },
@@ -17,7 +17,7 @@ const solicitudesMock = [
     id: 2,
     fundacion: "Comedor Esperanza",
     tipo: "PRODUCTO" as const,
-    descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    descripcion: "Buscamos sábanas, toallas y productos de higiene personal para nuestros residentes de edad avanzada.",
     ciudad: "Medellin",
     urgencia: "ALTA" as const,
   },
@@ -84,7 +84,7 @@ export default function SolicitudesDonantePage() {
           Solicitudes disponibles
         </h1>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Explora solicitudes de donación activas ordenadas por urgencia. Cada una viene de una institución verificada y con necesidades reales.
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-donafy-text/60">
           <span>Ultima actualizacion: {lastUpdated}</span>

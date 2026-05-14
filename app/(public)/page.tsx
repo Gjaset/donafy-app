@@ -7,6 +7,7 @@ import ComoFunciona from "@/components/landing/ComoFunciona";
 import Transparencia from "@/components/landing/Transparencia";
 import TiposDonacion from "@/components/landing/TiposDonacion";
 import FormularioContacto from "@/components/landing/FormularioContacto";
+import Suscripciones from "@/components/landing/Suscripciones";
 
 export default function PublicHome() {
   return (
@@ -19,6 +20,7 @@ export default function PublicHome() {
       <ComoFunciona />
       <Transparencia />
       <TiposDonacion />
+      <Suscripciones />
       <FormularioContacto />
     </div>
   );

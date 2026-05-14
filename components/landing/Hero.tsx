@@ -21,7 +21,7 @@ export default function Hero() {
             </span>
           </div>
           <h1 className="text-4xl font-semibold leading-tight text-donafy-text md:text-5xl">
-            En Colombia sobra comida. Y falta en quienes más la necesitan.
+            En Colombia sobra comida. Y falta para quienes más la necesitan.
           </h1>
           <p className="text-base leading-7 text-donafy-text/80">
             Donafy conecta proveedores de alimentos con ancianatos, orfanatos y

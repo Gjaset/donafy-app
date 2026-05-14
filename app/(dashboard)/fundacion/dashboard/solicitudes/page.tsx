@@ -17,7 +17,7 @@ type Solicitud = {
 const initialSolicitudes: Solicitud[] = [
   {
     id: 1,
-    titulo: "Lorem ipsum dolor",
+    titulo: "Alimentos no perecederos para ninos",
     tipo: "ALIMENTO",
     cantidad: "200 kg",
     urgencia: "ALTA",

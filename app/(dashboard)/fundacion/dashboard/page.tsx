@@ -8,7 +8,7 @@ export default function FundacionDashboardPage() {
           Panel de fundacion
         </h1>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Publica tus necesidades alimentarias, gestiona solicitudes entrantes y conecta con donantes y proveedores verificados.
         </p>
       </div>
 
@@ -17,7 +17,7 @@ export default function FundacionDashboardPage() {
           Acciones rapidas
         </h2>
         <p className="mt-2 text-sm text-donafy-text/70">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Comienza por crear una nueva solicitud de donación con los detalles de lo que necesitas. Servirá de base para que donantes y proveedores se conecten con tu institución.
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link
