@@ -3,75 +3,23 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
-enum Rol {
-  ADMIN
-  FUNDACION
-  DONANTE
-  CIUDADANO
-  PENDIENTE_APROBACION
-}
+// ⚠️ IMPORTANTE: El datasource provider es reemplazado dinámicamente por setup.js
+// según el valor de DATABASE_PROVIDER en .env (sqlite o postgresql)
+// Para cambiar: edita .env y ejecuta: npm run db:dev o npm run db:prod:deploy
 
-enum TipoDonacion {
-  ALIMENTO
-  PRODUCTO
-  DINERO
-}
-
-enum TipoSolicitud {
-  ALIMENTO
-  PRODUCTO
-}
-
-enum EstadoDonacion {
-  PENDIENTE
-  CONFIRMADA
-  ENTREGADA
-  CANCELADA
-}
-
-enum EstadoSolicitud {
-  ACTIVA
-  CUBIERTA
-  CANCELADA
-  VENCIDA
-}
-
-enum EstadoOrg {
-  PENDIENTE
-  APROBADA
-  RECHAZADA
-}
-
-enum Urgencia {
-  BAJA
-  NORMAL
-  ALTA
-  CRITICA
-}
-
-enum TipoDocumento {
-  RUT
-  CAMARA_COMERCIO
-  FOTO
-}
-
-enum TipoOrganizacion {
-  ONG
-  FUNDACION
-  COMEDOR_COMUNITARIO
-  OTRO
-}
+// Enums reemplazados con String para compatibilidad SQLite/PostgreSQL
+// Validación en capa de servicio (lib/validations.ts)
 
 model Usuario {
   id            Int        @id @default(autoincrement())
   nombre        String
   email         String     @unique
   password      String
-  rol           Rol        @default(CIUDADANO)
+  rol           String     @default("ciudadano")  // 'admin' | 'fundacion' | 'donante' | 'ciudadano' | 'pendiente'
   activo        Boolean    @default(true)
   creadoEn      DateTime   @default(now())
   actualizadoEn DateTime   @updatedAt
@@ -85,7 +33,7 @@ model Usuario {
 model Organizacion {
   id            Int              @id @default(autoincrement())
   nombre        String
-  tipo          TipoOrganizacion
+  tipo          String           // 'ong' | 'fundacion' | 'comedor_comunitario' | 'otro'
   nit           String           @unique
   direccion     String
   ciudad        String
@@ -93,7 +41,7 @@ model Organizacion {
   email         String
   descripcion   String
   verificada    Boolean          @default(false)
-  estado        EstadoOrg        @default(PENDIENTE)
+  estado        String           @default("pendiente")  // 'pendiente' | 'aprobada' | 'rechazada'
   usuarioId     Int              @unique
   usuario       Usuario          @relation(fields: [usuarioId], references: [id])
   motivoRechazo String?
@@ -110,7 +58,7 @@ model Documento {
   id             Int           @id @default(autoincrement())
   organizacionId Int
   organizacion   Organizacion  @relation(fields: [organizacionId], references: [id])
-  tipo           TipoDocumento
+  tipo           String        // 'rut' | 'camara_comercio' | 'foto'
   nombreOriginal String
   ruta           String
   mimeType       String
@@ -126,10 +74,10 @@ model Solicitud {
   organizacion   Organizacion    @relation(fields: [organizacionId], references: [id])
   titulo         String
   descripcion    String
-  tipo           TipoSolicitud
+  tipo           String          // 'alimento' | 'producto'
   cantidad       String
-  urgencia       Urgencia        @default(NORMAL)
-  estado         EstadoSolicitud @default(ACTIVA)
+  urgencia       String          @default("normal")  // 'baja' | 'normal' | 'alta' | 'critica'
+  estado         String          @default("activa")  // 'activa' | 'cubierta' | 'cancelada' | 'vencida'
   ciudad         String
   creadoEn       DateTime        @default(now())
   actualizadoEn  DateTime        @updatedAt
@@ -146,10 +94,10 @@ model Donacion {
   donante       Usuario        @relation("Donante", fields: [donanteId], references: [id])
   solicitudId   Int?
   solicitud     Solicitud?     @relation(fields: [solicitudId], references: [id])
-  tipo          TipoDonacion
+  tipo          String         // 'alimento' | 'producto' | 'dinero'
   descripcion   String
   cantidad      String
-  estado        EstadoDonacion @default(PENDIENTE)
+  estado        String         @default("pendiente")  // 'pendiente' | 'confirmada' | 'entregada' | 'cancelada'
   creadoEn      DateTime       @default(now())
   actualizadoEn DateTime       @updatedAt
 

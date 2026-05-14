@@ -1,19 +1,19 @@
 export const Roles = {
-  ADMIN: "ADMIN",
-  FUNDACION: "FUNDACION",
-  DONANTE: "DONANTE",
-  CIUDADANO: "CIUDADANO",
-  PENDIENTE_APROBACION: "PENDIENTE_APROBACION",
+  ADMIN: "admin",
+  FUNDACION: "fundacion",
+  DONANTE: "donante",
+  CIUDADANO: "ciudadano",
+  PENDIENTE_APROBACION: "pendiente",
 } as const;
 
 export type AppRole = (typeof Roles)[keyof typeof Roles];
 
 export const roleLabels: Record<AppRole, string> = {
   [Roles.ADMIN]: "Admin",
-  [Roles.FUNDACION]: "Fundacion",
+  [Roles.FUNDACION]: "Fundación",
   [Roles.DONANTE]: "Donante",
   [Roles.CIUDADANO]: "Ciudadano",
-  [Roles.PENDIENTE_APROBACION]: "Pendiente",
+  [Roles.PENDIENTE_APROBACION]: "Pendiente Aprobación",
 };
 
 export function getDashboardPathForRole(role: AppRole) {

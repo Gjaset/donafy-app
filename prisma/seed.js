@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const { PrismaClient, Rol } = require("@prisma/client");
+const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
@@ -11,27 +11,27 @@ async function main() {
     {
       email: "admin@donafy.com",
       nombre: "Administrador Donafy",
-      rol: Rol.ADMIN,
+      rol: "admin",
     },
     {
       email: "fundacion@donafy.com",
       nombre: "Fundacion Donafy",
-      rol: Rol.FUNDACION,
+      rol: "fundacion",
     },
     {
       email: "donante@donafy.com",
       nombre: "Donante Donafy",
-      rol: Rol.DONANTE,
+      rol: "donante",
     },
     {
       email: "ciudadano@donafy.com",
       nombre: "Ciudadano Donafy",
-      rol: Rol.CIUDADANO,
+      rol: "ciudadano",
     },
     {
       email: "pendiente@donafy.com",
       nombre: "Pendiente Donafy",
-      rol: Rol.PENDIENTE_APROBACION,
+      rol: "pendiente",
     },
   ];
 

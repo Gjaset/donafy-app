@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { Rol } from "@prisma/client";
+import { isValidRole, VALID_ROLES } from "@/lib/validations";
 
 export async function PATCH(
   request: Request,
@@ -10,7 +10,7 @@ export async function PATCH(
   try {
     const session = await auth();
 
-    if (!session?.user?.id || session.user.rol !== Rol.ADMIN) {
+    if (!session?.user?.id || session.user.rol !== "admin") {
       return NextResponse.json(
         { success: false, message: "No autorizado" },
         { status: 403 }
@@ -30,7 +30,7 @@ export async function PATCH(
     const rol = String(body?.rol || "").trim();
     const activo = body?.activo;
 
-    if (!Object.values(Rol).includes(rol as Rol)) {
+    if (!isValidRole(rol)) {
       return NextResponse.json(
         { success: false, message: "Rol invalido" },
         { status: 400 }
@@ -40,7 +40,7 @@ export async function PATCH(
     const updated = await prisma.usuario.update({
       where: { id: userId },
       data: {
-        rol: rol as Rol,
+        rol,
         ...(typeof activo === "boolean" ? { activo } : {}),
       },
     });

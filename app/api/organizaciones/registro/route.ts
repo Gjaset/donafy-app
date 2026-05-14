@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import {
-  EstadoOrg,
-  Rol,
-  TipoDocumento,
-  TipoOrganizacion,
-} from "@prisma/client";
+import { isValidTipoDocumento, isValidTipoOrganizacion, isValidEstadoOrg } from "@/lib/validations";
 import bcrypt from "bcryptjs";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
@@ -69,7 +64,7 @@ export async function POST(request: Request) {
   try {
     const session = await auth();
 
-    if (session?.user?.rol === Rol.ADMIN) {
+    if (session?.user?.rol === "admin") {
       return NextResponse.json(
         { success: false, message: "Operacion no permitida" },
         { status: 403 }
@@ -108,7 +103,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!Object.values(TipoOrganizacion).includes(tipo as TipoOrganizacion)) {
+    if (!isValidTipoOrganizacion(tipo)) {
       return NextResponse.json(
         { success: false, message: "Tipo de organizacion invalido" },
         { status: 400 }
@@ -165,7 +160,7 @@ export async function POST(request: Request) {
           nombre: responsable,
           email,
           password: hashedPassword,
-          rol: Rol.PENDIENTE_APROBACION,
+          rol: "pendiente",
           activo: true,
         },
       });
@@ -257,21 +252,21 @@ export async function POST(request: Request) {
       const created = await tx.organizacion.create({
         data: {
           nombre,
-          tipo: tipo as TipoOrganizacion,
+          tipo,
           nit,
           direccion,
           ciudad,
           telefono,
           email,
           descripcion,
-          estado: EstadoOrg.PENDIENTE,
+          estado: "pendiente",
           verificada: false,
           usuarioId: Number(userId),
           documentos: {
             create: [
-              { ...rutFile, tipo: TipoDocumento.RUT },
-              { ...camaraFile, tipo: TipoDocumento.CAMARA_COMERCIO },
-              { ...fotoFile, tipo: TipoDocumento.FOTO },
+              { ...rutFile, tipo: "rut" },
+              { ...camaraFile, tipo: "camara_comercio" },
+              { ...fotoFile, tipo: "foto" },
             ],
           },
         },
@@ -279,7 +274,7 @@ export async function POST(request: Request) {
 
       await tx.usuario.update({
         where: { id: Number(userId) },
-        data: { rol: Rol.PENDIENTE_APROBACION },
+        data: { rol: "pendiente" },
       });
 
       return created;

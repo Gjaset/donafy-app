@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { Rol } from "@prisma/client";
 
 export async function GET() {
   try {
     const session = await auth();
 
-    if (!session?.user?.id || session.user.rol !== Rol.ADMIN) {
+    if (!session?.user?.id || session.user.rol !== "admin") {
       return NextResponse.json(
         { success: false, message: "No autorizado" },
         { status: 403 }

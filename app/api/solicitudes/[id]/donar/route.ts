@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { EstadoSolicitud, Rol, TipoDonacion } from "@prisma/client";
+import { isValidEstadoSolicitud, isValidTipoDonacion } from "@/lib/validations";
 
 export async function POST(
   request: Request,
@@ -10,7 +10,7 @@ export async function POST(
   try {
     const session = await auth();
 
-    if (!session?.user?.id || session.user.rol !== Rol.DONANTE) {
+    if (!session?.user?.id || session.user.rol !== "donante") {
       return NextResponse.json(
         { success: false, message: "No autorizado" },
         { status: 403 }
@@ -30,7 +30,7 @@ export async function POST(
       where: { id: solicitudId },
     });
 
-    if (!solicitud || solicitud.estado !== EstadoSolicitud.ACTIVA) {
+    if (!solicitud || solicitud.estado !== "activa") {
       return NextResponse.json(
         { success: false, message: "Solicitud no disponible" },
         { status: 400 }
@@ -49,7 +49,7 @@ export async function POST(
       );
     }
 
-    if (!Object.values(TipoDonacion).includes(tipo as TipoDonacion)) {
+    if (!isValidTipoDonacion(tipo)) {
       return NextResponse.json(
         { success: false, message: "Tipo de donacion invalido" },
         { status: 400 }
@@ -60,7 +60,7 @@ export async function POST(
       data: {
         donanteId: Number(session.user.id),
         solicitudId,
-        tipo: tipo as TipoDonacion,
+        tipo,
         descripcion,
         cantidad,
       },

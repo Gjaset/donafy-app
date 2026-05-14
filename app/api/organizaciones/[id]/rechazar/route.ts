@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { EstadoOrg, Rol } from "@prisma/client";
+import { isValidEstadoOrg, isValidRole } from "@/lib/validations";
 
 export async function POST(
   request: Request,
@@ -10,7 +10,7 @@ export async function POST(
   try {
     const session = await auth();
 
-    if (!session?.user?.id || session.user.rol !== Rol.ADMIN) {
+    if (!session?.user?.id || session.user.rol !== "admin") {
       return NextResponse.json(
         { success: false, message: "No autorizado" },
         { status: 403 }
@@ -44,14 +44,14 @@ export async function POST(
       prisma.organizacion.update({
         where: { id: orgId },
         data: {
-          estado: EstadoOrg.RECHAZADA,
+          estado: "rechazada",
           verificada: false,
           motivoRechazo: motivo || "Sin motivo",
         },
       }),
       prisma.usuario.update({
         where: { id: organizacion.usuarioId },
-        data: { rol: Rol.CIUDADANO },
+        data: { rol: "ciudadano" },
       }),
     ]);
 

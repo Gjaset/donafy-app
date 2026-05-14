@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, resetRateLimit } from "@/lib/rateLimit";
-import { Rol } from "@prisma/client";
+import type { UserRole } from "@/types/next-auth";
 
 const LOGIN_LIMIT = 5;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
@@ -105,7 +105,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = Number(user.id);
         token.nombre = (user as { nombre?: string }).nombre ?? "";
-        token.rol = (user as { rol?: Rol }).rol ?? Rol.CIUDADANO;
+        token.rol = (user as { rol?: string }).rol ?? "ciudadano";
       }
 
       return token;
@@ -114,7 +114,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = Number(token.id ?? 0);
         session.user.nombre = String(token.nombre ?? "");
-        session.user.rol = (token.rol as Rol) ?? Rol.CIUDADANO;
+        session.user.rol = (token.rol as string) ?? "ciudadano";
       }
 
       return session;

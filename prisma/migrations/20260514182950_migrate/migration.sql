@@ -1,0 +1,3 @@
+-- SQLite does not allow dropping autoindexes associated with UNIQUE constraints.
+-- These constraints were already created in the initial migration, so this migration
+-- is intentionally left as a no-op to keep the migration history valid for the shadow DB.

@@ -6,11 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup": "node setup.js",
+    "db:dev": "cp .env.development .env && node setup.js && npx prisma migrate dev",
+    "db:studio": "node setup.js && npx prisma studio",
+    "db:reset": "node setup.js && npx prisma migrate reset --force",
+    "db:seed": "node setup.js && npx prisma db seed",
+    "db:prod:deploy": "cp .env.production .env && node setup.js && npx prisma migrate deploy"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@prisma/client": "^6.0.0",
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "formidable": "^3.5.4",
     "next": "^16.2.4",
     "next-auth": "^4.24.14",
@@ -29,8 +39,5 @@
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   }
 }

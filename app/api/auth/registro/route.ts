@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-import { Rol } from "@prisma/client";
+import { isValidPassword, isValidEmail, isValidRole } from "@/lib/validations";
 
 export async function POST(request: Request) {
   try {
@@ -18,10 +18,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const allowedRoles = [Rol.DONANTE, Rol.CIUDADANO];
-    const parsedRole = allowedRoles.includes(rol as Rol)
-      ? (rol as Rol)
-      : Rol.CIUDADANO;
+    const allowedRoles = ["donante", "ciudadano"];
+    const parsedRole = allowedRoles.includes(rol)
+      ? rol
+      : "ciudadano";
 
     const existing = await prisma.usuario.findUnique({
       where: { email },

@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { EstadoOrg, EstadoSolicitud, Rol, TipoSolicitud, Urgencia } from "@prisma/client";
+import { isValidTipoSolicitud, isValidEstadoSolicitud, isValidEstadoOrg, isValidUrgencia, VALID_REQUEST_TYPES, VALID_REQUEST_STATUS, VALID_ORG_STATUS, VALID_URGENCY_LEVELS } from "@/lib/validations";
 
 export async function GET() {
   try {
     const solicitudes = await prisma.solicitud.findMany({
       where: {
-        estado: EstadoSolicitud.ACTIVA,
-        organizacion: { estado: EstadoOrg.APROBADA, verificada: true },
+        estado: "activa",
+        organizacion: { estado: "aprobada", verificada: true },
       },
       include: {
         organizacion: { select: { nombre: true, ciudad: true } },
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   try {
     const session = await auth();
 
-    if (!session?.user?.id || session.user.rol !== Rol.FUNDACION) {
+    if (!session?.user?.id || session.user.rol !== "fundacion") {
       return NextResponse.json(
         { success: false, message: "No autorizado" },
         { status: 403 }
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
       where: { usuarioId: Number(session.user.id) },
     });
 
-    if (!organizacion || organizacion.estado !== EstadoOrg.APROBADA) {
+    if (!organizacion || organizacion.estado !== "aprobada") {
       return NextResponse.json(
         { success: false, message: "Organizacion no aprobada" },
         { status: 403 }
